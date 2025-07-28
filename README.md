@@ -1,1 +1,2 @@
-# FSR_Technical_Project
+# Field and Servive Robotics: Technical Project 🦈🌊
+This repository contains the Matlab-Simulink code produced for the final project of the Field and Service Robotics Course. The topic we worked on was the control of an Underwater Robot for trajectory tracking. The objective was to carry out succesfully a tracking control task and also to make a comparison among  **Feedback Linearizing Control** and **Sliding Mode Control**.
