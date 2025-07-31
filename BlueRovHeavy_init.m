@@ -7,14 +7,14 @@ end
 run BlueRovHeavy_data.m;
 
 %% Gains for FEEDBAC LINEARIZATION  Control
-Kf_D=12;
-Kf_P=38;
+Kf_D=43;
+Kf_P=78;
 
 %% Gains for SLIDING MODE Control
-Ks_S=4;
-Ks_D=25;
+Ks_S=8;
+Ks_D=67;
 
-Lambda=21*eye(6);
+Lambda=58*eye(6);
 
 %% Symbolic Kinematic Model (Quaternion Representation)
 

@@ -17,7 +17,7 @@ xref = etad(1, :);
 yref = etad(2, :);
 zref = etad(3, :);
 % === Setup video ===
-v = VideoWriter(string(folderName) + '/TrajectoryVideo.mp4', 'MPEG-4');
+v = VideoWriter(string(folderName) + '/TrajectoryVideoFL.mp4', 'MPEG-4');
 v.FrameRate = 15;
 v.Quality = 100;
 open(v);
