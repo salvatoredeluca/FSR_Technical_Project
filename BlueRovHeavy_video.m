@@ -1,6 +1,7 @@
-folderName =fullfile(pwd, 'Media');
-if  ~exist(folderName, 'dir') % Check if the folder doesnt  exist    
-    mkdir(folderName); % Create the folder
+close all;
+folderName = fullfile(pwd, 'Media');
+if ~exist(folderName, 'dir')    
+    mkdir(folderName); 
 end
 
 % === Estrai dati dalla simulazione ===
@@ -10,15 +11,20 @@ x = NED(:, 1);
 y = NED(:, 2);
 z = NED(:, 3);
 
+% === Estrai traiettoria di riferimento ===
+etad = out.etad.Data;  % Data è una 3xN (riga = variabile, colonna = tempo)
+xref = etad(1, :);
+yref = etad(2, :);
+zref = etad(3, :);
 % === Setup video ===
-v = VideoWriter(string(folderName)+'/TrajectoryVideo3.mp4', 'MPEG-4');
-v.FrameRate = 30;
+v = VideoWriter(string(folderName) + '/TrajectoryVideo.mp4', 'MPEG-4');
+v.FrameRate = 15;
 v.Quality = 100;
 open(v);
 
 % === Setup figura ===
 fig = figure('Color', 'w');
-set(gcf, 'Position', [100, 100, 1600, 900]);  % Finestra più grande per migliore risoluzione
+set(gcf, 'Position', [100, 100, 1600, 900]);
 
 xlabel('$x$ [m]', 'Interpreter', 'latex');
 ylabel('$y$ [m]', 'Interpreter', 'latex');
@@ -29,15 +35,14 @@ grid on;
 axis equal;
 hold on;
 
-% Riduci margini degli assi per eliminare bianco inutile
 ax = gca;
-ax.Position = [0.05 0.05 0.9 0.9];  % fa occupare quasi tutta la figura agli assi
+ax.Position = [0.05 0.05 0.9 0.9];
 
-% === Limiti asse fissi e simmetrici ===
+% === Limiti asse fissi e simmetrici (usando sia traiettoria che riferimento) ===
 padding = 0.3;
-xmin = min(x); xmax = max(x);
-ymin = min(y); ymax = max(y);
-zmin = min(z); zmax = max(z);
+xmin = min([x; xref']); xmax = max([x; xref']);
+ymin = min([y; yref']); ymax = max([y; yref']);
+zmin = min([z; zref']); zmax = max([z; zref']);
 rangeMax = max([xmax - xmin, ymax - ymin, zmax - zmin]) / 2;
 xc = (xmin + xmax)/2;
 yc = (ymin + ymax)/2;
@@ -46,7 +51,10 @@ xlim([xc - rangeMax - padding, xc + rangeMax + padding]);
 ylim([yc - rangeMax - padding, yc + rangeMax + padding]);
 zlim([zc - rangeMax - padding, zc + rangeMax + padding]);
 
-axis manual; % Blocca i limiti degli assi!
+axis manual;
+
+% === Plot traiettoria di riferimento ===
+plot3(xref, yref, zref, '--', 'Color', [0.6 0.6 0.9], 'LineWidth', 1.5);  % blu-grigio chiaro
 
 % === Sfera robot ===
 r = 0.4;
@@ -54,22 +62,19 @@ r = 0.4;
 hsfera = surf(r*sx + x(1), r*sy + y(1), r*sz + z(1), ...
               'FaceColor', [0, 0.3, 0.5], 'EdgeColor', 'none', 'FaceAlpha', 1.0);
 
-% === Traiettoria verde chiaro ===
+% === Traiettoria robot ===
 htraj = plot3(x(1), y(1), z(1), '-', 'Color', [0.3 1 0.3], 'LineWidth', 1.5);
 
 % === Animazione ===
 step = 3;
 for k = step:step:length(time)
-    % Aggiorna traiettoria
     set(htraj, 'XData', x(1:k), 'YData', y(1:k), 'ZData', z(1:k));
-    % Aggiorna sfera
     set(hsfera, 'XData', r*sx + x(k), 'YData', r*sy + y(k), 'ZData', r*sz + z(k));
     title(sprintf('t = %.2f s', time(k)), 'Interpreter', 'latex');
     
     drawnow;
-    frame = getframe(fig); % Prendi l’intera figura (non solo gli assi)
+    frame = getframe(fig);
     writeVideo(v, frame);
 end
 
 close(v);
-
