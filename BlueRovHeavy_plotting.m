@@ -72,7 +72,7 @@ if dim_eO(1)==4
     title('Orientation Errors', 'Interpreter','latex');
     xlabel('$t$ [s]', 'Interpreter','latex');
     ylabel('Orientation Errors', 'Interpreter','latex');
-    legend({ '$e_{\epsilon_1}$', '$e_{\epsilon_2}$','$e_{\epsilon_3}$'}, 'Interpreter','latex', 'Location','best');
+    legend({ '$e_{1}$', '$e_{2}$','$e_{3}$'}, 'Interpreter','latex', 'Location','best');
     saveas(gcf, fullfile(folderName, 'eO.eps'), 'epsc');
 else
     figure(5);
@@ -86,7 +86,7 @@ else
     title('Orientation Errors', 'Interpreter','latex');
     xlabel('$t$ [s]', 'Interpreter','latex');
     ylabel('Orientation Errors', 'Interpreter','latex');
-    legend({ '$e_{\epsilon_1}$', '$e_{\epsilon_2}$','$e_{\epsilon_3}$'}, 'Interpreter','latex', 'Location','best');
+    legend({ '$e_{1}$', '$e_{2}$','$e_{3}$'}, 'Interpreter','latex', 'Location','best');
     saveas(gcf, fullfile(folderName, 'eO.eps'), 'epsc');
 
 
